@@ -8,14 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var quoteViewModel = QuoteViewModel(quoteService: QuoteService())
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            List(categories, id: \.self) { category in NavigationLink(category, value: category)
+                
+            }
+            .navigationDestination(for: String.self) {
+                category in QuoteView(category: category)
+                    .environmentObject(quoteViewModel)
+            }
         }
-        .padding()
     }
 }
 
